@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Français — French Vocabulary &amp; Pronunciation Trainer</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">🇫🇷 <span>Mon Français</span></div>
+  <nav class="tabs" id="nav-tabs">
+    <button data-view="dashboard" class="tab active" data-i18n="nav_dashboard">Dashboard</button>
+    <button data-view="words" class="tab" data-i18n="nav_words">Words</button>
+    <button data-view="practice" class="tab" data-i18n="nav_practice">Practice</button>
+    <button data-view="import" class="tab" data-i18n="nav_import">Add Text</button>
+    <button data-view="sentences" class="tab" data-i18n="nav_sentences">Sentences</button>
+    <button data-view="settings" class="tab" data-i18n="nav_settings">Settings</button>
+  </nav>
+  <label class="fr-only-toggle" title="French-only mode / Mode tout-en-français">
+    <input type="checkbox" id="fr-only-cb"> <span data-i18n="fr_only">French-only</span>
+  </label>
+</header>
+
+<main id="main">
+  <section id="view-dashboard" class="view active"></section>
+  <section id="view-words" class="view"></section>
+  <section id="view-practice" class="view"></section>
+  <section id="view-import" class="view"></section>
+  <section id="view-sentences" class="view"></section>
+  <section id="view-settings" class="view"></section>
+</main>
+
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -253,7 +253,6 @@ sandale|sandal|nf|sɑ̃dal|clothes
 talon|heel|nm|talɔ̃|clothes
 semelle|sole (shoe)|nf|səmɛl|clothes
 usé|worn out|adj|yze|clothes
-neuf (adj)|brand new|adj|nœf
 abîmé|damaged|adj|abime
 solide|solid, sturdy|adj|sɔlid
 fragile|fragile|adj|fʁaʒil
@@ -265,17 +264,13 @@ pointu|pointed, sharp|adj|pwɛ̃ty
 tranchant|sharp (blade)|adj|tʁɑ̃ʃɑ̃
 émoussé|blunt, dull|adj|emuse
 creux|hollow|adj|kʁø
-plat (adj)|flat|adj|pla
 épais|thick|adj|epɛ
-fin (adj)|thin, fine|adj|fɛ̃
 étroit|narrow|adj|etʁwa
 vaste|vast|adj|vast
 immense|huge, immense|adj|imɑ̃s
-minuscule (taille)|tiny|adj|minyskyl
 énorme|enormous|adj|enɔʁm
 géant|giant|adj|ʒeɑ̃
 nain|dwarf|nm|nɛ̃
-moyen (taille)|medium, average|adj|mwajɛ̃
 hauteur des montagnes|height of mountains|expr|otœʁ de mɔ̃taɲ|nature
 sommet|summit, top|nm|sɔmɛ|nature
 pente|slope|nf|pɑ̃t|nature

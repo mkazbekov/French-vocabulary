@@ -8,6 +8,7 @@ import b6 from './data/words6.js';
 import b7 from './data/words7.js';
 import b8 from './data/words8.js';
 import b9 from './data/words9.js';
+import RANKS from './data/ranks.js';
 
 export const POS_LABELS = {
   v:    { en: 'verb',        fr: 'verbe' },
@@ -65,13 +66,16 @@ function headword(w) {
 export const WORDS = [];
 const byWord = new Map();
 
-let rank = 1;
+// corpus-based order (see tools/validate.ps1): word -> position
+const rankOrder = new Map();
+RANKS.forEach((w, i) => { if (!rankOrder.has(w)) rankOrder.set(w, i); });
+
 for (const band of [b1, b2, b3, b4, b5, b6, b7, b8, b9]) {
   for (const line of band) {
     const parts = line.split('|');
     if (parts.length < 2) continue;
     const entry = {
-      rank: rank++,
+      rank: 0,
       word: parts[0].trim(),
       en: (parts[1] || '').trim(),
       pos: (parts[2] || '').trim() || 'n',
@@ -80,9 +84,15 @@ for (const band of [b1, b2, b3, b4, b5, b6, b7, b8, b9]) {
       key: headword(parts[0]),
     };
     WORDS.push(entry);
-    if (!byWord.has(entry.key)) byWord.set(entry.key, entry);
   }
 }
+
+// Sort by real corpus frequency (OpenSubtitles 2018); entries missing from
+// the generated order keep their file position at the end.
+WORDS.forEach((e, i) => { e._ord = rankOrder.has(norm(e.word)) ? rankOrder.get(norm(e.word)) : 100000 + i; });
+WORDS.sort((a, b) => a._ord - b._ord);
+WORDS.forEach((e, i) => { e.rank = i + 1; delete e._ord; });
+for (const e of WORDS) { if (!byWord.has(e.key)) byWord.set(e.key, e); }
 
 export const TOTAL = WORDS.length;
 

@@ -7,6 +7,8 @@ const DEFAULTS = {
     ttsRate: 0.9,
     ttsVoice: '',           // preferred voice name
     newPerSession: 8,       // new cards mixed into a practice session
+    dailyGoal: 20,          // words to practice per day
+    onboarded: false,       // quick-start screen shown once
   },
   // word progress, keyed by dictionary key or custom word.
   // { status: 'new'|'learning'|'known', box: 0..5, due: ts, correct, wrong,
@@ -108,6 +110,26 @@ export function statsThisWeek() {
     }
   }
   return { learned, reviews, correct };
+}
+
+// Consecutive days (ending today or yesterday) with at least one review.
+export function streak() {
+  const days = new Set(state.log.filter(l => l.reviews > 0).map(l => l.day));
+  let n = 0;
+  const d = new Date();
+  // a streak is still alive if yesterday was practiced but today not yet
+  if (!days.has(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
+  while (days.has(d.toISOString().slice(0, 10))) {
+    n++;
+    d.setDate(d.getDate() - 1);
+  }
+  return n;
+}
+
+// Words reviewed today vs. the daily goal.
+export function todayProgress() {
+  const t = state.log.find(l => l.day === todayStr());
+  return { reviews: t ? t.reviews : 0, goal: state.settings.dailyGoal || 20 };
 }
 
 export function isDue(key) {

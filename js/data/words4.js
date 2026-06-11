@@ -152,7 +152,6 @@ autorisation|authorization|nf|otɔʁizasjɔ̃
 autoriser|to authorize|v|otɔʁize
 interdit|forbidden|adj|ɛ̃tɛʁdi
 obligatoire|mandatory|adj|ɔbliɡatwaʁ
-devoir (nom)|duty|nm|dəvwaʁ
 droit de vote|right to vote|expr|dʁwa də vɔt
 liberté|freedom|nf|libɛʁte
 égalité|equality|nf|eɡalite
@@ -177,7 +176,6 @@ planète|planet|nf|planɛt|nature
 univers|universe|nm|ynivɛʁ|nature
 climat|climate|nf|klima|weather
 chaleur|heat|nf|ʃalœʁ|weather
-froid (nom)|cold|nm|fʁwa|weather
 humide|humid, damp|adj|ymid|weather
 sec|dry|adj|sɛk|weather
 mouillé|wet|adj|muje|weather
@@ -193,7 +191,6 @@ tremblement de terre|earthquake|expr|tʁɑ̃bləmɑ̃ də tɛʁ|nature
 catastrophe|disaster|nf|katastʁɔf
 accident|accident|nm|aksidɑ̃|health
 blesser|to injure|v|blese|health
-mort (adj)|dead|adj|mɔʁ
 tuer|to kill|v|tɥe
 disparaître|to disappear|v|dispaʁɛtʁ
 apparaître|to appear|v|apaʁɛtʁ
@@ -231,7 +228,6 @@ aventure|adventure|nf|avɑ̃tyʁ|travel
 explorer|to explore|v|ɛksplɔʁe|travel
 guide|guide|nm|ɡid|travel
 touriste|tourist|n|tuʁist|travel
-souvenir (objet)|souvenir|nm|suvniʁ|travel
 appareil ménager|household appliance|expr|apaʁɛj menaʒe|home
 machine à laver|washing machine|expr|maʃin a lave|home
 aspirateur|vacuum cleaner|nm|aspiʁatœʁ|home

@@ -194,7 +194,7 @@ gêner|to bother, to embarrass|v|ʒene|emotions
 gêné|embarrassed|adj|ʒene|emotions
 embarrassant|embarrassing|adj|ɑ̃baʁasɑ̃|emotions
 ridicule|ridiculous|adj|ʁidikyl
-moquer (se)|to make fun of|v|mɔke|emotions
+se moquer|to make fun of|v|mɔke|emotions
 moquerie|mockery|nf|mɔkʁi|emotions
 taquiner|to tease|v|takine|people
 plaisanter|to joke|v|plɛzɑ̃te|daily
@@ -217,4 +217,28 @@ se déguiser|to dress up (in costume)|v|sə deɡize|daily
 masque|mask|nm|mask|clothes
 fête nationale|national holiday|expr|fɛt nasjɔnal|daily
 quatorze juillet|Bastille Day|expr|katɔʁz ʒɥijɛ|daily
+poire|pear|nf|pwaʁ|grocery
+cerise|cherry|nf|səʁiz|grocery
+prune|plum|nf|pʁyn|grocery
+noix|walnut, nut|nf|nwa|grocery
+noisette|hazelnut|nf|nwazɛt|grocery
+framboise|raspberry|nf|fʁɑ̃bwaz|grocery
+myrtille|blueberry|nf|miʁtij|grocery
+pastèque|watermelon|nf|pastɛk|grocery
+melon|melon|nm|məlɔ̃|grocery
+ananas|pineapple|nm|anana|grocery
+abricot|apricot|nm|abʁiko|grocery
+aubergine|eggplant|nf|obɛʁʒin|grocery
+courgette|zucchini|nf|kuʁʒɛt|grocery
+épinard|spinach|nm|epinaʁ|grocery
+chou|cabbage|nm|ʃu|grocery
+chou-fleur|cauliflower|nm|ʃuflœʁ|grocery
+haricot|bean|nm|aʁiko|grocery
+petits pois|peas|expr|pəti pwa|grocery
+lentille|lentil; lens|nf|lɑ̃tij|grocery
+poivron|bell pepper|nm|pwavʁɔ̃|grocery
+navet|turnip; flop (film)|nm|navɛ|grocery
+radis|radish|nm|ʁadi|grocery
+concombre|cucumber|nm|kɔ̃kɔ̃bʁ|grocery
+citrouille|pumpkin|nf|sitʁuj|grocery
 `.trim().split('\n');

@@ -26,7 +26,6 @@ thème|theme|nm|tɛm|classroom
 résumé|summary|nm|ʁezyme|classroom
 résumer|to summarize|v|ʁezyme|classroom
 verbe|verb|nm|vɛʁb|classroom
-nom (grammaire)|noun|nm|nɔ̃|classroom
 adjectif|adjective|nm|adʒɛktif|classroom
 adverbe|adverb|nm|advɛʁb|classroom
 pronom|pronoun|nm|pʁɔnɔ̃|classroom
@@ -46,7 +45,6 @@ fichier|file (computer)|nm|fiʃje|work
 logiciel|software|nm|lɔʒisjɛl|work
 application|app, application|nf|aplikasjɔ̃|daily
 jeu vidéo|video game|expr|ʒø video|daily
-souris (informatique)|mouse (computer)|nf|suʁi|work
 cliquer|to click|v|klike|work
 taper|to type; to hit|v|tape|work
 imprimer|to print|v|ɛ̃pʁime|work
@@ -74,7 +72,6 @@ minuit|midnight|nm|minɥi|time
 après-midi|afternoon|nm|apʁɛmidi|time
 matinée|morning (duration)|nf|matine|time
 soirée|evening (duration)|nf|swaʁe|time
-quotidien (nom)|daily life; daily paper|nm|kɔtidjɛ̃|daily
 emploi du temps|schedule|expr|ɑ̃plwa dy tɑ̃|work
 pause|break|nf|poz|work
 repos|rest|nm|ʁəpo|daily
@@ -152,10 +149,9 @@ chambre d'hôtel|hotel room|expr|ʃɑ̃bʁ dotɛl|travel
 réception|reception, front desk|nf|ʁesɛpsjɔ̃|travel
 clé de chambre|room key|expr|kle də ʃɑ̃bʁ|travel
 pourboire|tip|nm|puʁbwaʁ|food
-plat|dish, course|nm|pla|food
+plat|dish, course; flat (adj)|nm|pla|food
 plat principal|main course|expr|pla pʁɛ̃sipal|food
 dessert|dessert|nm|desɛʁ|food
-entrée (plat)|appetizer|nf|ɑ̃tʁe|food
 spécialité|specialty|nf|spesjalite|food
 recette|recipe|nf|ʁəsɛt|food
 ingrédient|ingredient|nm|ɛ̃ɡʁedjɑ̃|food
@@ -219,8 +215,6 @@ retirer|to withdraw|v|ʁətiʁe|money
 déposer|to deposit, to put down|v|depoze|money
 emprunter|to borrow|v|ɑ̃pʁœ̃te|money
 prêter|to lend|v|pʁete|money
-prêt (nom)|loan|nm|pʁɛ|money
-intérêt (banque)|interest (bank)|nm|ɛ̃teʁɛ|money
 investir|to invest|v|ɛ̃vɛstiʁ|money
 économie|economy; saving|nf|ekɔnɔmi|money
 commerce|trade, business|nm|kɔmɛʁs|work

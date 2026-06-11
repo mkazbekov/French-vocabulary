@@ -1,55 +1,81 @@
-# Mon Français — French Vocabulary & Pronunciation Trainer
+# 🇫🇷 Mon Français — French Vocabulary & Pronunciation Trainer
 
-A personal French trainer focused on **correct pronunciation** and learning the
-**3000 most common French words**. Pure HTML/CSS/JS — no build step, no backend.
-All progress is stored locally in your browser.
+Learn the **3000 most common French words** with native audio, IPA
+transcriptions, pronunciation tips and spaced-repetition flashcards.
+Runs entirely in your browser — no account, no install, no build step.
 
-## Run it
-
-Any static file server works. With the included PowerShell server (no installs needed):
-
-```powershell
-powershell -ExecutionPolicy Bypass -File serve.ps1   # http://localhost:8123
-```
-
-Or `npx serve`, `python -m http.server`, GitHub Pages, etc.
-(Opening `index.html` directly via `file://` won't work — ES modules need a server.)
+**➡️ New here? Read [START_HERE.md](START_HERE.md) — on Windows just double-click `START.bat`.**
 
 ## Features
 
-- **3000-word frequency list** built in, with English meaning, part of speech,
-  IPA transcription, and real-life topic (grocery, classroom, travel, emotions, …).
-  Dashboard tracks `learned / 3000`, weekly progress, weakest words, and the most
-  common words you haven't started yet.
-- **Document & text input** — drag-and-drop PDF / DOCX / TXT, or paste any French
-  text. The app extracts words and sentences, highlights which of the 3000 common
-  words appear, and shows coverage.
-- **Pronunciation-first cards** — every word has IPA (hand-written for common words,
-  rule-generated otherwise), plain-language pronunciation tips, audio from
-  Wiktionary/Wikimedia native recordings when available, and French text-to-speech
-  as fallback.
-- **Memorization mode** — hear the word first, see the transcript, guess the meaning,
-  then reveal. Simple Leitner spaced repetition prioritizes words you get wrong.
-- **French-only mode** — the whole interface and all pronunciation explanations
-  switch to French; English is blurred until you click it.
-- **Sentence learning** — extracted sentences are auto-categorized (questions,
-  classroom phrases, travel phrases, dialogs, …) with audio and key-word links.
-- **Filters** — search by French/English, filter by status, part of speech, topic,
-  and frequency band. Word categories are editable per word.
-- Progress export/import as JSON in Settings.
+- **ROAD TO 3000** dashboard — words learned, daily target, streak,
+  estimated finish date, and one big START LEARNING button.
+- **5 levels** — Top 100 → 500 → 1000 → 2000 → 3000, ordered by *real*
+  corpus frequency (OpenSubtitles 2018, see below).
+- **Pronunciation first** — every word has IPA (hand-written for common
+  words, rule-generated otherwise), rule-based pronunciation explanations
+  (in English or French), native recordings from Wiktionary/Wikimedia
+  Commons when available, and French TTS fallback. Replay 🔊, slow 🐢 and
+  repeat ×3 🔁 controls everywhere.
+- **Listening-first flashcards** — hear the word, guess the meaning, grade
+  yourself. Simple Leitner spaced repetition prioritizes weak words.
+- **Document import** — drag-and-drop PDF/DOCX/TXT or paste any French
+  text; the app extracts words & sentences, shows which of the 3000 words
+  appear, and uses your texts as example sentences.
+- **Sentence learning** — auto-categorized sentences (questions, dialogs,
+  travel/classroom/work phrases, …) with audio and key-word links.
+- **French-only mode** — full French interface, English blurred until clicked.
+- **Filters** — search French/English; filter by status, part of speech,
+  topic, frequency band. Categories editable per word.
+- Progress saved in localStorage; export/import as JSON in Settings.
+
+## Word database
+
+- 3000 curated entries: French word, English meaning, part of speech, IPA,
+  topic category.
+- Ranked by the **OpenSubtitles 2018 French frequency corpus**
+  ([hermitdave/FrequencyWords](https://github.com/hermitdave/FrequencyWords));
+  2947/3000 headwords matched directly, expressions ranked by their rarest
+  content word. See [VALIDATION_REPORT.md](VALIDATION_REPORT.md) for the
+  full audit (duplicates, translations, IPA, categories, …).
+- Regenerate the report/ranking: `powershell -File tools/validate.ps1`
+  (requires `tools/fr_50k.txt` from the repo above).
+
+## Running
+
+| Platform | How |
+|---|---|
+| Windows | double-click **START.bat** |
+| Mac/Linux | `python3 -m http.server 8123` in the folder, open <http://localhost:8123> |
+| Any | any static file server pointed at the repo root |
+
+The app must be served over HTTP (ES modules don't work from `file://`);
+opening `index.html` directly shows friendly instructions instead of a
+blank page.
 
 ## Structure
 
 ```
-index.html          app shell
+index.html          app shell + startup guard (never a blank screen)
 css/style.css       styles
-js/app.js           UI / views
-js/dict.js          3000-word dictionary loader
-js/data/words*.js   frequency list data (9 bands)
-js/state.js         localStorage state + spaced repetition
+js/app.js           UI / views (Road to 3000, practice, import, …)
+js/dict.js          3000-word dictionary loader (corpus-ranked)
+js/data/words*.js   word list data (9 files)
+js/data/ranks.js    corpus-based ordering (generated)
+js/state.js         localStorage state, spaced repetition, streak
 js/pronounce.js     rule-based IPA + pronunciation tips (en/fr)
-js/audio.js         Wiktionary audio lookup + TTS fallback
+js/audio.js         Wiktionary audio lookup + TTS fallback, slow/repeat
 js/extract.js       PDF/DOCX/text extraction, sentence categorization
 js/flashcards.js    practice session builder
-serve.ps1           tiny static server for Windows
+serve.ps1           tiny static server (Windows, no installs)
+START.bat           one-click launcher (Windows)
+tools/validate.ps1  database audit + corpus re-ranking
 ```
+
+## Known limitations
+
+- Word matching is exact (lemma) — inflected forms in imported texts
+  (e.g. *mangeons*) are not yet linked to their lemma (*manger*).
+- Native audio depends on Wiktionary coverage and an internet connection;
+  offline you get TTS only.
+- English glosses are short hints, not full dictionary definitions.

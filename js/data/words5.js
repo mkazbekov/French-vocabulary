@@ -47,7 +47,6 @@ charmant|charming|adj|ʃaʁmɑ̃
 impressionner|to impress|v|ɛ̃pʁesjɔne
 émouvoir|to move (emotionally)|v|emuvwaʁ|emotions
 ému|moved, touched|adj|emy|emotions
-toucher (émotion)|to touch, to move|v|tuʃe|emotions
 frémir|to shudder|v|fʁemiʁ
 trembler|to tremble|v|tʁɑ̃ble|emotions
 sursauter|to jump (startled)|v|syʁsote
@@ -110,7 +109,6 @@ actif|active|adj|aktif
 occupé|busy|adj|ɔkype|work
 disponible|available|adj|dispɔnibl
 absent|absent|adj|apsɑ̃|classroom
-présent (adj)|present|adj|pʁezɑ̃|classroom
 assister à|to attend|expr|asiste a|work
 manquer à|to be missed by|expr|mɑ̃ke a|emotions
 tu me manques|I miss you|expr|ty mə mɑ̃k|emotions
@@ -140,9 +138,8 @@ prénom|first name|nm|pʁenɔ̃|people
 nom de famille|last name|expr|nɔ̃ də famij|people
 surnom|nickname|nm|syʁnɔ̃|people
 identité|identity|nf|idɑ̃tite
-nationalité|nationalité|nf|nasjɔnalite|travel
+nationalité|nationality|nf|nasjɔnalite|travel
 origine|origin|nf|ɔʁiʒin
-naissance (lieu de)|birthplace|expr|nɛsɑ̃s
 célibataire|single (unmarried)|adj|selibatɛʁ|people
 marié|married|adj|maʁje|people
 divorcé|divorced|adj|divɔʁse|people
@@ -156,7 +153,6 @@ relation|relationship|nf|ʁəlasjɔ̃|people
 amitié|friendship|nf|amitje|people
 connaissance|acquaintance; knowledge|nf|kɔnɛsɑ̃s|people
 inconnu|unknown, stranger|adj|ɛ̃kɔny
-étranger (adj)|foreign|adj|etʁɑ̃ʒe|travel
 international|international|adj|ɛ̃tɛʁnasjɔnal
 mondial|worldwide|adj|mɔ̃djal
 local|local|adj|lɔkal|places
@@ -228,7 +224,6 @@ génie|genius|nm|ʒeni
 talent|talent|nm|talɑ̃|art
 don|gift, talent|nm|dɔ̃
 capacité|ability, capacity|nf|kapasite
-pouvoir (nom)|power|nm|puvwaʁ
 influence|influence|nf|ɛ̃flyɑ̃s
 autorité|authority|nf|otɔʁite
 contrôle|control|nm|kɔ̃tʁol
@@ -262,7 +257,7 @@ normalement|normally|adv|nɔʁmaləmɑ̃
 habituellement|usually|adv|abitɥɛlmɑ̃|time
 rarement|rarely|adv|ʁɑʁmɑ̃|time
 fréquemment|frequently|adv|fʁekamɑ̃|time
-quotidien|daily|adj|kɔtidjɛ̃|daily
+quotidien|daily; daily life (noun)|adj|kɔtidjɛ̃|daily
 hebdomadaire|weekly|adj|ɛbdɔmadɛʁ|time
 mensuel|monthly|adj|mɑ̃sɥɛl|time
 annuel|yearly|adj|anɥɛl|time

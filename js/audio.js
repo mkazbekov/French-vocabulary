@@ -23,12 +23,12 @@ function pickVoice() {
   return fr.find(v => /fr[-_]FR/i.test(v.lang)) || fr[0];
 }
 
-export function speak(text) {
+export function speak(text, slow = false) {
   if (!('speechSynthesis' in window)) return false;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'fr-FR';
-  u.rate = state.settings.ttsRate || 0.9;
+  u.rate = (state.settings.ttsRate || 0.9) * (slow ? 0.55 : 1);
   const v = pickVoice();
   if (v) u.voice = v;
   speechSynthesis.speak(u);
@@ -81,7 +81,7 @@ let currentAudio = null;
 
 // Play the best available audio for a French word.
 // Returns 'native' if real audio played, 'tts' for speech synthesis.
-export async function playWord(word) {
+export async function playWord(word, slow = false) {
   const key = word.toLowerCase();
   let url = state.audioCache[key];
   if (url === undefined) {
@@ -94,14 +94,23 @@ export async function playWord(word) {
     try {
       if (currentAudio) currentAudio.pause();
       currentAudio = new Audio(url);
+      currentAudio.playbackRate = slow ? 0.6 : 1;
       await currentAudio.play();
       return 'native';
     } catch { /* fall through to TTS */ }
   }
-  speak(word);
+  speak(word, slow);
   return 'tts';
 }
 
-export function playSentence(text) {
-  speak(text);
+// Play a word N times with a pause between repetitions (repeat mode).
+export async function repeatWord(word, times = 3, slow = false) {
+  for (let i = 0; i < times; i++) {
+    await playWord(word, slow);
+    await new Promise(r => setTimeout(r, slow ? 1600 : 1100));
+  }
+}
+
+export function playSentence(text, slow = false) {
+  speak(text, slow);
 }

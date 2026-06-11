@@ -1,8 +1,8 @@
 // Mon Français — main application.
 import { WORDS, TOTAL, lookup, posLabel, topicLabel, posGroup, POS_LABELS, TOPIC_LABELS } from './dict.js';
-import { state, save, wordEntry, setStatus, recordAnswer, statsThisWeek, isDue, addSentence } from './state.js';
+import { state, save, wordEntry, setStatus, recordAnswer, statsThisWeek, isDue, addSentence, streak, todayProgress } from './state.js';
 import { approxIPA, pronunciationTips } from './pronounce.js';
-import { playWord, playSentence, frenchVoices } from './audio.js';
+import { playWord, playSentence, repeatWord, frenchVoices } from './audio.js';
 import { extractFromFile, extractWords, extractSentences, sentencesContaining, SENT_CATS } from './extract.js';
 import { buildSession, sessionStats } from './flashcards.js';
 
@@ -78,6 +78,7 @@ const I18N = {
   set_reset: ['Reset all data', 'Tout réinitialiser'],
   confirm_reset: ['Delete ALL progress?', 'Supprimer TOUTE la progression ?'],
   practice_filter: ['Practice:', 'Entraînement :'],
+  pf_level: ['Current level', 'Niveau actuel'],
   pf_all: ['All words', 'Tous les mots'],
   pf_top500: ['Top 500', 'Top 500'],
   pf_top1000: ['Top 1000', 'Top 1000'],
@@ -86,6 +87,30 @@ const I18N = {
   doc_coverage: ['of the 3000 most common words appear in this text', 'des 3000 mots les plus fréquents figurent dans ce texte'],
   uploaded_docs: ['Analyzed texts', 'Textes analysés'],
   band: ['Frequency', 'Fréquence'],
+  road_to: ['ROAD TO 3000', 'OBJECTIF 3000'],
+  todays_target: ["Today's target", "Objectif du jour"],
+  current_streak: ['Current streak', 'Série en cours'],
+  days: ['days', 'jours'],
+  day: ['day', 'jour'],
+  next_lesson: ['Recommended next lesson', 'Prochaine leçon recommandée'],
+  start_learning: ['START LEARNING', 'COMMENCER'],
+  level: ['Level', 'Niveau'],
+  levels_title: ['Your level', 'Votre niveau'],
+  words_remaining: ['words remaining', 'mots restants'],
+  complete: ['complete', 'terminé'],
+  est_completion: ['Estimated finish (3000 words)', 'Fin estimée (3000 mots)'],
+  daily_goal_lbl: ['Daily goal', 'Objectif quotidien'],
+  cards_today: ['cards today', "cartes aujourd'hui"],
+  lesson_top: ['Top {n} French Words', 'Les {n} mots les plus fréquents'],
+  lesson_review: ['Review due words', 'Réviser les mots à revoir'],
+  slow: ['Slow', 'Lent'],
+  repeat3: ['×3', '×3'],
+  ob_title: ['Welcome! / Bienvenue !', 'Bienvenue !'],
+  ob_what: ['This app teaches you the 3000 most common French words — with audio pronunciation, IPA, and smart flashcards.', 'Cette application vous apprend les 3000 mots français les plus fréquents — avec prononciation audio, API et cartes mémoire intelligentes.'],
+  ob_road: ['ROAD TO 3000: words are ordered by real frequency (film subtitles). Learn the most useful words first, level by level: Top 100 → 500 → 1000 → 2000 → 3000.', 'OBJECTIF 3000 : les mots sont classés par fréquence réelle. Apprenez d\'abord les plus utiles, niveau par niveau : Top 100 → 500 → 1000 → 2000 → 3000.'],
+  ob_how: ['Press START LEARNING. You hear a word, guess its meaning, then grade yourself. The app repeats hard words more often (spaced repetition).', 'Appuyez sur COMMENCER. Vous écoutez un mot, devinez son sens, puis évaluez-vous. L\'application répète plus souvent les mots difficiles.'],
+  ob_go: ["Let's go!", 'Allons-y !'],
+  ob_skip: ['Explore on my own', 'Explorer par moi-même'],
 };
 
 function lang() { return state.settings.frOnly ? 'fr' : 'en'; }
@@ -158,12 +183,62 @@ function counts() {
   return { known, learning };
 }
 
+// Structured progression: Level 1 = top 100 words, ... Level 5 = top 3000.
+const LEVELS = [
+  { n: 1, cap: 100 },
+  { n: 2, cap: 500 },
+  { n: 3, cap: 1000 },
+  { n: 4, cap: 2000 },
+  { n: 5, cap: 3000 },
+];
+
+function levelProgress(cap) {
+  const slice = WORDS.filter(e => e.rank <= cap);
+  const known = slice.filter(e => statusOf(e.key) === 'known').length;
+  return { known, total: slice.length, pct: slice.length ? known / slice.length : 0 };
+}
+
+// Lowest level that is not yet complete (>=95% known counts as complete).
+function currentLevel() {
+  for (const lv of LEVELS) {
+    if (levelProgress(lv.cap).pct < 0.95) return lv;
+  }
+  return LEVELS[LEVELS.length - 1];
+}
+
+function lessonName(lv) {
+  return L('lesson_top').replace('{n}', lv.cap);
+}
+
+// Average words learned per day over the last 14 days; used for the estimate.
+function learnRate() {
+  const twoWeeks = Date.now() - 14 * 24 * 3600 * 1000;
+  let learned = 0;
+  for (const k in state.words) {
+    const w = state.words[k];
+    if (w.status === 'known' && w.learnedAt >= twoWeeks) learned++;
+  }
+  return learned / 14;
+}
+
+function estCompletionText(known) {
+  const remaining = TOTAL - known;
+  if (!remaining) return '🎉';
+  let rate = learnRate();
+  if (rate < 0.5) rate = Math.max(1, (state.settings.dailyGoal || 20) / 4);
+  const d = new Date(Date.now() + (remaining / rate) * 24 * 3600 * 1000);
+  return d.toLocaleDateString(lang() === 'fr' ? 'fr-FR' : undefined,
+    { year: 'numeric', month: 'short' });
+}
+
 function renderDashboard() {
-  const { known, learning } = counts();
+  const { known } = counts();
   const wk = statsThisWeek();
   const { due } = sessionStats();
-  const pct = known / TOTAL;
-  const C = 2 * Math.PI * 62;
+  const st = streak();
+  const today = todayProgress();
+  const lv = currentLevel();
+  const lp = levelProgress(lv.cap);
 
   const weak = WORDS
     .filter(e => { const w = state.words[e.key]; return w && w.wrong > 0 && w.status !== 'known'; })
@@ -176,33 +251,37 @@ function renderDashboard() {
   let accuracy = '—';
   if (wk.reviews) accuracy = Math.round(100 * wk.correct / wk.reviews) + '%';
 
-  const bands = [[1, 500], [501, 1000], [1001, 2000], [2001, TOTAL]];
-  const bandBars = bands.map(([a, b]) => {
-    const slice = WORDS.slice(a - 1, b);
-    const k = slice.filter(e => statusOf(e.key) === 'known').length;
-    return `<div class="mt8"><div class="row" style="font-size:13px"><span>${a}–${b}</span><span class="spacer"></span><span class="badge rank">${k}/${slice.length}</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${slice.length ? (100 * k / slice.length) : 0}%"></div></div></div>`;
+  const nextLesson = due > 0 ? L('lesson_review') : lessonName(lv);
+
+  const levelRows = LEVELS.map(l => {
+    const p = levelProgress(l.cap);
+    const cls = p.pct >= 0.95 ? 'done' : (l.n === lv.n ? 'current' : '');
+    return `<div class="level-row ${cls}">
+      <div class="level-badge">${p.pct >= 0.95 ? '✓' : l.n}</div>
+      <div class="level-info">
+        <div class="t">${esc(L('level'))} ${l.n} — ${esc(lessonName(l))}</div>
+        <div class="d">${p.known} / ${p.total} · ${Math.round(p.pct * 100)}% ${esc(L('complete'))} · ${p.total - p.known} ${esc(L('words_remaining'))}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${p.pct * 100}%"></div></div>
+      </div>
+    </div>`;
   }).join('');
 
   document.getElementById('view-dashboard').innerHTML = `
-    <h2>${esc(L('goal_title'))}</h2>
-    <p class="sub">🇫🇷 Mon Français</p>
-    <div class="card dash-hero">
-      <div class="progress-ring">
-        <svg width="150" height="150">
-          <circle cx="75" cy="75" r="62" fill="none" stroke="var(--line)" stroke-width="12"/>
-          <circle cx="75" cy="75" r="62" fill="none" stroke="var(--blue)" stroke-width="12"
-                  stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/>
-        </svg>
-        <div class="ring-label"><span class="big">${known}</span><span class="small">/ ${TOTAL} ${esc(L('words_learned'))}</span></div>
+    <div class="road-hero">
+      <div class="road-title">🛣️ ${esc(L('road_to'))}</div>
+      <div class="road-big">${known} / ${TOTAL}</div>
+      <div class="road-sub">${esc(L('words_learned'))}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${(100 * known / TOTAL).toFixed(1)}%"></div></div>
+      <div class="road-stats">
+        <div class="road-stat"><div class="num">${today.reviews} / ${today.goal}</div><div class="lbl">${esc(L('todays_target'))} · ${esc(L('cards_today'))}</div></div>
+        <div class="road-stat"><div class="num">🔥 ${st}</div><div class="lbl">${esc(L('current_streak'))} (${esc(L(st === 1 ? 'day' : 'days'))})</div></div>
+        <div class="road-stat"><div class="num">${esc(L('level'))} ${lv.n}</div><div class="lbl">${esc(lessonName(lv))}</div></div>
+        <div class="road-stat"><div class="num">${estCompletionText(known)}</div><div class="lbl">${esc(L('est_completion'))}</div></div>
       </div>
-      <div class="stat-row">
-        <div class="stat"><div class="num">${wk.learned}</div><div class="lbl">${esc(L('this_week'))}</div></div>
-        <div class="stat"><div class="num">${wk.reviews}</div><div class="lbl">${esc(L('reviews_week'))}</div></div>
-        <div class="stat"><div class="num">${accuracy}</div><div class="lbl">${esc(L('accuracy'))}</div></div>
-        <div class="stat"><div class="num">${due + learning ? due : 0}</div><div class="lbl">${esc(L('due_now'))}</div></div>
-      </div>
+      <button class="btn-hero" id="dash-start">▶ ${esc(L('start_learning'))}</button>
+      <div class="road-next">📖 ${esc(L('next_lesson'))}: <b>${esc(nextLesson)}</b>${due ? ` · ${due} ${esc(L('due_now'))}` : ''}</div>
     </div>
+    <div class="card"><h3>🏆 ${esc(L('levels_title'))}</h3>${levelRows}</div>
     <div class="grid2">
       <div class="card">
         <h3>⚠️ ${esc(L('weakest'))}</h3>
@@ -211,13 +290,28 @@ function renderDashboard() {
       <div class="card">
         <h3>⭐ ${esc(L('most_common_unlearned'))}</h3>
         ${unlearned.map(wordRowHTML).join('')}
-        <button class="btn primary mt16" id="dash-practice">▶ ${esc(L('start_practice'))}</button>
       </div>
     </div>
-    <div class="card"><h3>📊 ${esc(L('band'))}</h3>${bandBars}</div>`;
+    <div class="card">
+      <div class="row">
+        <div class="stat"><div class="num">${wk.learned}</div><div class="lbl">${esc(L('this_week'))}</div></div>
+        <div class="stat"><div class="num">${wk.reviews}</div><div class="lbl">${esc(L('reviews_week'))}</div></div>
+        <div class="stat"><div class="num">${accuracy}</div><div class="lbl">${esc(L('accuracy'))}</div></div>
+        <div class="stat"><div class="num">${due}</div><div class="lbl">${esc(L('due_now'))}</div></div>
+      </div>
+    </div>`;
 
-  document.getElementById('dash-practice').onclick = () => show('practice');
+  document.getElementById('dash-start').onclick = startLearning;
   bindWordRows(document.getElementById('view-dashboard'));
+}
+
+// The one-click entry point: jump into a session for the current level.
+function startLearning() {
+  const lv = currentLevel();
+  practice.filter = 'level';
+  practice.levelCap = lv.cap;
+  show('practice');
+  startSession();
 }
 
 function wordRowHTML(e) {
@@ -340,7 +434,11 @@ function openWordCard(e) {
     <div class="modal">
       <button class="close-x">×</button>
       <div class="wc-head">
-        <button class="btn-audio big" data-audio="${esc(e.word)}">🔊</button>
+        <div class="audio-controls">
+          <button class="btn-audio big" data-audio="${esc(e.word)}" title="${esc(L('listen'))}">🔊</button>
+          <button class="btn-audio alt" id="wc-slow" title="${esc(L('slow'))}">🐢</button>
+          <button class="btn-audio alt wide" id="wc-repeat" title="${esc(L('repeat3'))}">🔁 ×3</button>
+        </div>
         <div>
           <div class="wc-word">${esc(e.word)}</div>
           <div class="wc-ipa">/${esc(ipaOf(e))}/</div>
@@ -393,6 +491,8 @@ function openWordCard(e) {
   overlay.onclick = ev => { if (ev.target === overlay) close(); };
   overlay.querySelector('.close-x').onclick = close;
   overlay.querySelectorAll('[data-audio]').forEach(b => b.onclick = () => playWord(b.dataset.audio));
+  overlay.querySelector('#wc-slow').onclick = () => playWord(e.word, true);
+  overlay.querySelector('#wc-repeat').onclick = () => repeatWord(e.word, 3);
   overlay.querySelectorAll('[data-audio-sent]').forEach(b => b.onclick = () => playSentence(b.dataset.audioSent));
   overlay.querySelectorAll('[data-status]').forEach(b => b.onclick = () => {
     setStatus(e.key, b.dataset.status);
@@ -409,9 +509,10 @@ function openWordCard(e) {
 }
 
 // ---------- practice (memorization mode) ------------------------------------
-const practice = { cards: [], i: 0, step: 0, right: 0, filter: 'all', active: false };
+const practice = { cards: [], i: 0, step: 0, right: 0, filter: 'level', levelCap: 0, active: false };
 
 const PRACTICE_FILTERS = {
+  level: e => e.rank <= (practice.levelCap || currentLevel().cap),
   all: null,
   top500: e => e.rank <= 500,
   top1000: e => e.rank <= 1000,
@@ -464,7 +565,11 @@ function renderPractice() {
     <div class="fc-stage">
       <div class="fc-progress">${esc(L('card_of'))} ${practice.i + 1} / ${practice.cards.length} · <span class="badge rank">#${e.rank}</span></div>
       <div class="fc-card">
-        <button class="btn-audio big" id="fc-audio">🔊</button>
+        <div class="audio-controls">
+          <button class="btn-audio big" id="fc-audio" title="${esc(L('listen'))}">🔊</button>
+          <button class="btn-audio alt" id="fc-slow" title="${esc(L('slow'))}">🐢</button>
+          <button class="btn-audio alt wide" id="fc-repeat" title="${esc(L('repeat3'))}">🔁 ×3</button>
+        </div>
         ${step >= 1 ? `
           <div class="fc-word">${esc(e.word)}</div>
           <div class="fc-ipa">/${esc(ipaOf(e))}/</div>
@@ -486,6 +591,8 @@ function renderPractice() {
     </div>`;
 
   root.querySelector('#fc-audio').onclick = () => playWord(e.word);
+  root.querySelector('#fc-slow').onclick = () => playWord(e.word, true);
+  root.querySelector('#fc-repeat').onclick = () => repeatWord(e.word, 3);
   if (step === 0) root.querySelector('#fc-show').onclick = () => { practice.step = 1; renderPractice(); };
   if (step === 1) root.querySelector('#fc-answer').onclick = () => { practice.step = 2; renderPractice(); };
   if (step === 2) {
@@ -704,6 +811,10 @@ function renderSettings() {
         <input type="number" id="set-new" min="0" max="15" value="${state.settings.newPerSession}" style="width:70px">
       </div>
       <div class="setting-row">
+        <div><strong>${esc(L('daily_goal_lbl'))}</strong><div class="desc">${esc(L('cards_today'))}</div></div>
+        <input type="number" id="set-goal" min="5" max="200" step="5" value="${state.settings.dailyGoal}" style="width:70px">
+      </div>
+      <div class="setting-row">
         <div><strong>${esc(L('set_export'))}</strong></div>
         <div class="row">
           <button class="btn small" id="set-export">⬇ Export</button>
@@ -722,6 +833,7 @@ function renderSettings() {
   root.querySelector('#set-rate').onchange = () => { renderSettings(); playWord('bonjour'); };
   root.querySelector('#set-voice').onchange = e => { state.settings.ttsVoice = e.target.value; save(); playWord('bonjour'); };
   root.querySelector('#set-new').onchange = e => { state.settings.newPerSession = Math.max(0, +e.target.value || 0); save(); };
+  root.querySelector('#set-goal').onchange = e => { state.settings.dailyGoal = Math.max(5, +e.target.value || 20); save(); };
   root.querySelector('#set-export').onclick = () => {
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
@@ -753,9 +865,43 @@ function setFrOnly(on) {
   render(current);
 }
 
+// ---------- onboarding (quick start, shown once) -----------------------------
+function showOnboarding() {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal" style="max-width:540px; text-align:center">
+      <div style="font-size:44px">🇫🇷</div>
+      <h2 style="margin:6px 0 14px">${esc(L('ob_title'))}</h2>
+      <div class="onboard-step"><div class="n">1</div><div>${esc(L('ob_what'))}</div></div>
+      <div class="onboard-step"><div class="n">2</div><div>${esc(L('ob_road'))}</div></div>
+      <div class="onboard-step"><div class="n">3</div><div>${esc(L('ob_how'))}</div></div>
+      <div class="row" style="justify-content:center; margin-top:18px">
+        <button class="btn-hero" id="ob-go">▶ ${esc(L('ob_go'))}</button>
+        <button class="btn ghost" id="ob-skip">${esc(L('ob_skip'))}</button>
+      </div>
+    </div>`;
+  const done = go => {
+    state.settings.onboarded = true;
+    save();
+    overlay.remove();
+    if (go) startLearning();
+  };
+  overlay.querySelector('#ob-go').onclick = () => done(true);
+  overlay.querySelector('#ob-skip').onclick = () => done(false);
+  document.getElementById('modal-root').appendChild(overlay);
+}
+
 // ---------- boot -----------------------------------------------------------
 document.querySelectorAll('#nav-tabs .tab').forEach(b => b.onclick = () => show(b.dataset.view));
 document.getElementById('fr-only-cb').checked = state.settings.frOnly;
 document.getElementById('fr-only-cb').onchange = e => setFrOnly(e.target.checked);
 applyI18nChrome();
 show('dashboard');
+
+// signal the startup guard in index.html that we are alive, hide the splash
+window.__appLoaded = true;
+clearTimeout(window.__bootTimer);
+const bootEl = document.getElementById('boot-screen');
+if (bootEl) bootEl.classList.add('hidden');
+if (!state.settings.onboarded) showOnboarding();

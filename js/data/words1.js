@@ -25,7 +25,7 @@ du|of the, some|det|dy
 elle|she, it|pron|ɛl
 au|to the, at the|det|o
 pour|for, in order to|prep|puʁ
-pas|not|adv|pa
+pas|not; step (un pas)|adv|pa
 vous|you (formal/plural)|pron|vu
 par|by, through|prep|paʁ
 sur|on, upon|prep|syʁ
@@ -39,7 +39,7 @@ lui|him, to him/her|pron|lɥi
 nous|we, us|pron|nu
 comme|like, as|conj|kɔm
 mais|but|conj|mɛ
-pouvoir|to be able to, can|v|puvwaʁ
+pouvoir|to be able to, can; power (noun)|v|puvwaʁ
 avec|with|prep|avɛk
 tout|all, everything|adj|tu
 y|there, to it|pron|i
@@ -65,7 +65,7 @@ grand|big, tall, great|adj|ɡʁɑ̃
 celui|the one, that one|pron|səlɥi
 même|same, even|adj|mɛm
 notre|our|det|nɔtʁ
-devoir|to have to, must|v|dəvwaʁ
+devoir|to have to, must; duty, homework|v|dəvwaʁ
 là|there|adv|la
 jour|day|nm|ʒuʁ|time
 prendre|to take|v|pʁɑ̃dʁ
@@ -144,7 +144,7 @@ connaître|to know (people, places)|v|kɔnɛtʁ
 ici|here|adv|isi|places
 chercher|to look for|v|ʃɛʁʃe
 revenir|to come back|v|ʁəvəniʁ|travel
-nom|name|nm|nɔ̃|people
+nom|name; noun|nm|nɔ̃|people
 sentir|to feel, to smell|v|sɑ̃tiʁ|emotions
 attendre|to wait (for)|v|atɑ̃dʁ
 vieux|old|adj|vjø
@@ -220,7 +220,7 @@ recevoir|to receive|v|ʁəsəvwaʁ
 genre|kind, type, genre|nm|ʒɑ̃ʁ
 reste|rest, remainder|nm|ʁɛst
 lettre|letter|nf|lɛtʁ|classroom
-fin|end|nf|fɛ̃
+fin|end; thin, fine (adj)|nf|fɛ̃
 vivre|to live|v|vivʁ|daily
 oublier|to forget|v|ublije
 histoire|story, history|nf|istwaʁ|classroom
@@ -275,7 +275,7 @@ expliquer|to explain|v|ɛksplike|classroom
 fenêtre|window|nf|fənɛtʁ|home
 manquer|to miss, to lack|v|mɑ̃ke
 plaisir|pleasure|nm|pleziʁ|emotions
-souvenir|memory; to remember (se)|nm|suvniʁ
+souvenir|memory; souvenir|nm|suvniʁ
 décider|to decide|v|deside
 espérer|to hope|v|ɛspeʁe|emotions
 nature|nature|nf|natyʁ|nature
@@ -348,7 +348,7 @@ jeune fille|young girl|expr|ʒœn fij|people
 triste|sad|adj|tʁist|emotions
 malade|sick, ill|adj|malad|health
 fatigué|tired|adj|fatiɡe|health
-prêt|ready|adj|pʁɛ
+prêt|ready; loan (noun)|adj|pʁɛ
 plein air|outdoors|expr|plɛn ɛʁ|nature
 trois|three|num|tʁwa|numbers
 quatre|four|num|katʁ|numbers
@@ -361,7 +361,7 @@ dix|ten|num|dis|numbers
 vingt|twenty|num|vɛ̃|numbers
 cent|hundred|num|sɑ̃|numbers
 mille|thousand|num|mil|numbers
-ensemble|together|adv|ɑ̃sɑ̃bl
+ensemble|together; set, whole (noun)|adv|ɑ̃sɑ̃bl
 alors|then, so|adv|alɔʁ
 déjà|already|adv|deʒa|time
 enfin|finally, at last|adv|ɑ̃fɛ̃

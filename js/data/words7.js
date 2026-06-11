@@ -170,7 +170,7 @@ naviguer|to sail, to navigate|v|naviɡe|travel
 croisière|cruise|nf|kʁwazjɛʁ|travel
 naufrage|shipwreck|nm|nofʁaʒ|travel
 sauvetage|rescue|nm|sovtaʒ|health
-noyer (se)|to drown|v|nwaje|health
+se noyer|to drown|v|nwaje|health
 plage de sable|sandy beach|expr|plaʒ də sabl|travel
 coquillage|seashell|nm|kɔkijaʒ|nature
 crabe|crab|nm|kʁab|animals

@@ -237,7 +237,6 @@ professeur|teacher, professor|nm|pʁɔfesœʁ|classroom
 université|university|nf|ynivɛʁsite|classroom
 cours|course, class|nm|kuʁ|classroom
 leçon|lesson|nf|ləsɔ̃|classroom
-devoir(s)|homework|nm|dəvwaʁ|classroom
 exercice|exercise|nm|ɛɡzɛʁsis|classroom
 examen|exam|nm|ɛɡzamɛ̃|classroom
 note|grade, note|nf|nɔt|classroom
@@ -292,7 +291,7 @@ bagage|luggage|nm|baɡaʒ|travel
 passeport|passport|nm|paspɔʁ|travel
 douane|customs|nf|dwan|travel
 frontière|border|nf|fʁɔ̃tjɛʁ|travel
-étranger|foreigner; abroad|nm|etʁɑ̃ʒe|travel
+étranger|foreigner; foreign, abroad|nm|etʁɑ̃ʒe|travel
 hôtel|hotel|nm|otɛl|travel
 auberge|inn, hostel|nf|obɛʁʒ|travel
 plage|beach|nf|plaʒ|travel

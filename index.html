@@ -36,6 +36,52 @@
 <div id="modal-root"></div>
 <div id="toast-root"></div>
 
+<!-- Startup guard: never show a blank screen, never fail silently. -->
+<div id="boot-screen">
+  <div class="boot-card" id="boot-card">
+    <div style="font-size:40px">🇫🇷</div>
+    <h1 style="margin:8px 0 4px">Mon Français</h1>
+    <p id="boot-msg">Loading your French trainer…</p>
+  </div>
+</div>
+<script>
+(function () {
+  var boot = document.getElementById('boot-card');
+  function problem(title, stepsHtml) {
+    boot.innerHTML =
+      '<div style="font-size:40px">🛟</div>' +
+      '<h1 style="margin:8px 0 4px">' + title + '</h1>' + stepsHtml;
+  }
+  if (location.protocol === 'file:') {
+    problem("Almost there — one more step!",
+      '<p>You opened <b>index.html</b> directly, but browsers block apps opened this way.</p>' +
+      '<p style="text-align:left"><b>Easy fix (Windows):</b><br>' +
+      '1. Go to the app folder.<br>' +
+      '2. Double-click <b>START.bat</b>.<br>' +
+      'The app will open by itself in your browser. 🎉</p>' +
+      '<p style="text-align:left"><b>Mac/Linux:</b> open a terminal in the folder and run a small web server, e.g.<br>' +
+      '<code>python3 -m http.server 8123</code><br>then visit <code>http://localhost:8123</code></p>' +
+      '<p>See <b>START_HERE.md</b> for details.</p>');
+    return;
+  }
+  // If the app hasn't booted after 7s, explain instead of hanging.
+  window.__bootTimer = setTimeout(function () {
+    if (!window.__appLoaded) {
+      problem('The app could not start',
+        '<p>Something prevented the app from loading.</p>' +
+        '<p style="text-align:left">Things to try:<br>' +
+        '1. Refresh the page (Ctrl+R).<br>' +
+        '2. Make sure you started the app with <b>START.bat</b> (or a local web server).<br>' +
+        '3. Use a modern browser (Chrome, Edge, Firefox).<br>' +
+        '4. Check your internet connection on first load (the PDF/Word reader libraries load from the web).</p>' +
+        (window.__bootError ? '<p style="color:#b91c1c"><small>Error: ' + window.__bootError + '</small></p>' : ''));
+    }
+  }, 7000);
+  window.addEventListener('error', function (e) {
+    window.__bootError = (e.message || 'unknown error');
+  });
+})();
+</script>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>

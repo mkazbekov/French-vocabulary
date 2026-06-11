@@ -44,7 +44,6 @@ odeur|smell|nf|ɔdœʁ
 vue|view, sight|nf|vy
 regard|look, gaze|nm|ʁəɡaʁ
 geste|gesture|nm|ʒɛst
-pas|step|nm|pɑ
 mouvement|movement|nm|muvmɑ̃
 bouger|to move|v|buʒe
 avancer|to move forward|v|avɑ̃se
@@ -208,7 +207,6 @@ carré|square|adj|kaʁe
 cercle|circle|nm|sɛʁkl
 morceau|piece|nm|mɔʁso
 partie|part|nf|paʁti
-ensemble (nom)|whole, set|nm|ɑ̃sɑ̃bl
 groupe|group|nm|ɡʁup|people
 foule|crowd|nf|ful|people
 liste|list|nf|list
@@ -290,7 +288,6 @@ tissu|fabric|nm|tisy|clothes
 laine|wool|nf|lɛn|clothes
 coton|cotton|nm|kɔtɔ̃|clothes
 cuir|leather|nm|kɥiʁ|clothes
-verre (matière)|glass (material)|nm|vɛʁ
 papier d'emballage|wrapping paper|expr|papje dɑ̃balaʒ
 boîte|box, can|nf|bwat|grocery
 paquet|package|nm|pakɛ|grocery

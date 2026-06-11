@@ -12,7 +12,14 @@ $mime = @{
 
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:$Port/")
-$listener.Start()
+try {
+  $listener.Start()
+} catch {
+  Write-Host ""
+  Write-Host "Could not start: port $Port is already in use."
+  Write-Host "The app is probably already running - open http://localhost:$Port in your browser."
+  exit 1
+}
 Write-Host "Serving $root at http://localhost:$Port/"
 
 while ($listener.IsListening) {
